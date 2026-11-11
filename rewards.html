@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rewards wallet | Dekatre</title>
+<meta name="description" content="Check your Dekatre points, turn them into discount codes for Shopee, and see your history.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Rewards wallet | Dekatre">
+<meta property="og:description" content="Check your Dekatre points, turn them into discount codes for Shopee, and see your history.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .wallet { display: grid; grid-template-columns: 1.4fr 1fr; border: 1px solid var(--line); border-radius: var(--radius); }
+  .wallet > div { padding: clamp(1.25rem, 3vw, 2rem); }
+  .wallet > div + div { border-left: 1px solid var(--line-soft); }
+  .balance { font-family: var(--display); font-size: clamp(3.5rem, 9vw, 5.5rem); line-height: 1; color: var(--accent-text); }
+  .bar { height: 8px; background: var(--line-soft); border-radius: 999px; overflow: hidden; margin: .6rem 0 .4rem; }
+  .bar span { display: block; height: 100%; background: var(--orange); transition: width .4s; }
+  .totals dt { color: var(--muted); font-size: .85rem; }
+  .totals dd { margin: 0 0 1rem; font-family: var(--display); font-size: 2rem; line-height: 1.1; }
+  @media (max-width: 760px) { .wallet { grid-template-columns: 1fr; } .wallet > div + div { border-left: 0; border-top: 1px solid var(--line-soft); }
+    .totals { display: flex; gap: 2rem; } }
+
+  .rewards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+  .reward { border: 1px solid var(--line); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; min-height: 230px; }
+  .reward img { height: 90px; width: auto; margin: 0 auto 1rem; object-fit: contain; }
+  .reward h3 { font-size: 1.35rem; margin-bottom: .2rem; }
+  .reward .cost { color: var(--accent-text); margin-bottom: 1rem; }
+  .reward .btn { margin-top: auto; padding: .6rem 1rem; }
+
+  .lower { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 760px) { .lower { grid-template-columns: 1fr; } }
+  .history { list-style: none; margin: 0; padding: 0; max-height: 360px; overflow-y: auto; }
+  .history li { display: flex; justify-content: space-between; gap: 1rem; padding: .7rem .9rem; border-radius: var(--radius); margin-bottom: .4rem; background: rgba(232,145,63,.12); font-size: .92rem; }
+  .history .pts { font-weight: 700; white-space: nowrap; }
+  .history .minus { color: var(--muted); }
+  .history time { display: block; color: var(--muted); font-size: .78rem; }
+  .vlist { list-style: none; margin: 0; padding: 0; }
+  .vlist li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; border: 1px dashed var(--line); border-radius: var(--radius); padding: .8rem 1rem; margin-bottom: .5rem; }
+  .vlist { display: grid; gap: .8rem; }
+  .vlist li.code-item { display: grid; gap: .5rem; border: 0; padding: 0; background: none; }
+  .vlist li.code-shop { border: 0; padding: 0; }
+  .code-actions { display: flex; gap: .4rem; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / Rewards / Rewards wallet</nav>
+      <h1>Your rewards wallet</h1>
+      <p class="lede">Earn points from skin trivia, daily spins and reviews. Redeem them for discount codes, then enter the code at Shopee checkout.</p>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="wallet">
+        <div>
+          <p class="muted mb-0">Balance</p>
+          <div class="balance"><span id="bal">0</span> <span style="font-size:.4em">points</span></div>
+          <div class="bar" role="progressbar" aria-label="Progress to next reward" id="barWrap"><span id="bar"></span></div>
+          <p class="small muted mb-0" id="target"></p>
+        </div>
+        <dl class="totals mb-0">
+          <div><dt>Total earned</dt><dd id="earned">0</dd></div>
+          <div><dt>Total redeemed</dt><dd id="redeemed">0</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <h2>Redeem points for a Shopee code</h2>
+      <div class="chips" role="group" aria-label="Filter rewards" id="filters">
+        <button class="chip" aria-pressed="true" data-f="all">All rewards</button>
+        <button class="chip" aria-pressed="false" data-f="affordable">I can redeem now</button>
+        <button class="chip" aria-pressed="false" data-f="product">Free products</button>
+        <button class="chip" aria-pressed="false" data-f="voucher">Discounts</button>
+      </div>
+      <div class="rewards" id="rewards"></div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap lower">
+      <div class="panel panel--plain">
+        <h2 style="font-size:1.8rem">My Shopee codes</h2>
+        <p class="small muted">Copy a code, then paste it into the voucher field at Shopee checkout. One code per order.</p>
+        <ul class="vlist" id="vouchers"></ul>
+      </div>
+      <div class="panel panel--plain">
+        <h2 style="font-size:1.8rem">History</h2>
+        <ul class="history" id="history"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+const CATALOG = [
+  { id: "r1", cat: "voucher", name: "S$2 off", cost: 200, v: { prefix: "2OFF", label: "S$2 off your Shopee order" } },
+  { id: "r2", cat: "voucher", name: "Free shipping", cost: 300, v: { prefix: "SHIP", label: "Free shipping on Shopee" } },
+  { id: "r3", cat: "voucher", name: "S$5 off", cost: 500, v: { prefix: "5OFF", label: "S$5 off your Shopee order" } },
+  { id: "r4", cat: "product", name: "Free Superserum Mask", cost: 600, img: "images/mask.png", v: { prefix: "MASK", label: "Free Superserum Mask with any order" } },
+  { id: "r5", cat: "voucher", name: "15% off a bundle", cost: 800, v: { prefix: "15OFF", label: "15% off a C-Defense bundle" } },
+  { id: "r6", cat: "product", name: "Free Face Mist", cost: 1400, img: "images/mist.png", v: { prefix: "MIST", label: "Free Face Mist with any order" } },
+  { id: "r7", cat: "product", name: "Free DD Cream SPF 30", cost: 1600, img: "images/ddcream.png", v: { prefix: "SPF", label: "Free DD Cream SPF 30 with any order" } }
+];
+let filter = "all";
+const fmtDate = d => new Date(d).toLocaleDateString("en-SG", { day: "numeric", month: "short", year: "numeric" });
+
+function render() {
+  const p = Points.get();
+  document.getElementById("bal").textContent = p.balance;
+  document.getElementById("earned").textContent = p.earned;
+  document.getElementById("redeemed").textContent = p.redeemed;
+
+  const next = CATALOG.filter(c => c.cost > p.balance).sort((a, b) => a.cost - b.cost)[0];
+  const pct = next ? Math.round(p.balance / next.cost * 100) : 100;
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("barWrap").setAttribute("aria-valuenow", pct);
+  document.getElementById("target").textContent = next ? `${next.cost - p.balance} more points to unlock ${next.name}` : "You can redeem every reward. Treat yourself.";
+
+  const list = CATALOG.filter(c => filter === "all" || (filter === "affordable" ? c.cost <= p.balance : c.cat === filter));
+  document.getElementById("rewards").innerHTML = list.length ? list.map(c => `
+    <article class="reward">
+      ${c.img ? `<img src="${c.img}" alt="">` : `<div style="font-family:var(--display);font-size:2.6rem;color: var(--accent-text);margin-bottom:.5rem">${c.name.split(" ")[0]}</div>`}
+      <h3>${c.name}</h3><p class="cost">${c.cost} points</p>
+      <button class="btn ${c.cost > p.balance ? "btn--ghost" : ""}" data-redeem="${c.id}" ${c.cost > p.balance ? "disabled" : ""}>${c.cost > p.balance ? `Need ${c.cost - p.balance} more` : "Redeem now"}</button>
+    </article>`).join("") : `<p class="muted">Not enough points for any reward yet. <a href="climate-quiz.html">Play skin trivia</a> to earn some.</p>`;
+
+  const C = Codes.get(), stu = isStudentEmail(Auth.email());
+  const codeRow = c => `<li class="code-item">
+      <div><strong>${c.label}</strong><br><span class="small muted">${c.expires ? "Use by " + fmtDate(c.expires) : "Valid while you're a student"}</span></div>
+      <div class="code-box"><code>${c.code}</code>
+        <span class="code-actions"><button class="btn" data-copy="${c.code}" style="padding:.5rem 1rem">Copy</button>
+        ${c.id ? `<button class="btn btn--ghost" data-used="${c.id}" style="padding:.5rem 1rem">Mark as used</button>` : ""}</span></div></li>`;
+  const codeList = (stu ? [{ code: BUNDLES.student.code, label: "15% off the Student Starter Bundle" }] : []).concat(C);
+  document.getElementById("vouchers").innerHTML = codeList.length ? codeList.map(codeRow).join("") + `<li class="code-shop">${shopeeButton(SHOPEE_BUNDLE, "Shop on Shopee")}</li>`
+    : `<li class="muted">No codes yet. <a href="spin.html">Spin the wheel</a> or redeem points above.</li>`;
+
+  document.getElementById("history").innerHTML = p.history.map(h => `
+    <li><span>${h.text}<time datetime="${h.date}">${fmtDate(h.date)}</time></span><span class="pts ${h.pts < 0 ? "minus" : ""}">${h.pts > 0 ? "+" : ""}${h.pts}</span></li>`).join("");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!Auth.current()) {
+    document.querySelectorAll("main > section").forEach(s => s.remove());
+    document.querySelector("main").insertAdjacentHTML("beforeend",
+      `<section class="section--tight"><div class="wrap">${loginPrompt("Your balance, discount codes and history are linked to your account.")}</div></section>`);
+    return;
+  }
+  render();
+  document.getElementById("filters").addEventListener("click", e => {
+    const b = e.target.closest("[data-f]"); if (!b) return; filter = b.dataset.f;
+    document.querySelectorAll("#filters .chip").forEach(c => c.setAttribute("aria-pressed", c === b)); render();
+  });
+  document.getElementById("vouchers").addEventListener("click", e => {
+    const b = e.target.closest("[data-used]"); if (!b) return;
+    Codes.remove(b.dataset.used); toast("Code removed"); render();
+  });
+  document.getElementById("rewards").addEventListener("click", e => {
+    const b = e.target.closest("[data-redeem]"); if (!b) return;
+    const c = CATALOG.find(x => x.id === b.dataset.redeem);
+    if (Points.spend(c.cost, `Redeemed: ${c.name}`)) {
+      const code = Codes.add(c.v); toast(`Your code ${code.code} is ready`); render();
+      document.getElementById("vouchers").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+});
+</script>
+</body>
+</html>

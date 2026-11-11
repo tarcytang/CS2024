@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spin the wheel | Dekatre</title>
+<meta name="description" content="Spin the Dekatre wheel once a day to win points, free shipping, free products or up to 30% off the C-Defense bundle.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Spin the wheel | Dekatre">
+<meta property="og:description" content="Spin the Dekatre wheel once a day to win points, free shipping, free products or up to 30% off the C-Defense bundle.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .wheel-area { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 860px) { .wheel-area { grid-template-columns: 1fr; } }
+  .wheel-box { position: relative; width: min(100%, 460px); aspect-ratio: 1; margin-inline: auto; }
+  .wheel-box::before { /* glow */ content: ""; position: absolute; inset: -12%; border-radius: 50%; background: radial-gradient(circle, rgba(232,145,63,.35), transparent 65%); }
+  #wheel { position: relative; width: 100%; height: 100%; transition: transform 5s cubic-bezier(.12,.75,.12,1); }
+  #wheel text { font-family: var(--body); font-size: 13px; font-weight: 600; }
+  .pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 16px solid transparent; border-right: 16px solid transparent; border-top: 30px solid var(--ink); z-index: 2; filter: drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
+  .hub { position: absolute; inset: 41%; border-radius: 50%; background: var(--bg); border: 2px solid var(--orange); display: grid; place-items: center; z-index: 2; font-family: var(--display); font-size: 1.1rem; color: var(--accent-text); }
+  .result { min-height: 7rem; }
+  .odds { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  .odds td { padding: .45rem 0; border-bottom: 1px solid var(--line-soft); }
+  .odds td:last-child { text-align: right; color: var(--muted); }
+  .linkish { background: none; border: 0; color: var(--muted); text-decoration: underline; font-size: .82rem; padding: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="rewards.html">Rewards</a> / Spin the wheel</nav>
+      <h1>Spin for rewards</h1>
+      <p class="lede">One free spin every day. Every slot wins something: points, free shipping, a free product or money off the bundle.</p>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap wheel-area">
+      <div class="wheel-box">
+        <div class="pointer" aria-hidden="true"></div>
+        <svg id="wheel" viewBox="0 0 400 400" role="img" aria-label="Prize wheel with nine rewards"></svg>
+        <div class="hub" aria-hidden="true">Dekatre</div>
+      </div>
+      <div>
+        <div class="result" aria-live="polite" id="result">
+          <h2 id="resultTitle">Ready to spin?</h2>
+          <p id="resultText" class="muted">Your reward goes straight into your rewards wallet.</p>
+        </div>
+        <div class="btn-row"><button class="btn" id="spinBtn">Spin the wheel</button><a class="btn btn--ghost" href="rewards.html">View my rewards</a></div>
+        <p class="small muted" id="nextSpin" style="margin-top:1rem"></p>
+        <button class="linkish" id="resetSpin">Reset today's spin (for presentation demo)</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid-2" style="gap:2.5rem">
+      <div>
+        <h2>Odds of winning</h2>
+        <table class="odds" id="odds"><caption class="visually-hidden">Chance of each reward</caption></table>
+      </div>
+      <div>
+        <h2>Rules</h2>
+        <ul class="check-list">
+          <li>One spin per account per day. The wheel resets at midnight.</li>
+          <li>Discount codes are valid for 30 days. Enter them in the voucher field at Shopee checkout.</li>
+          <li>Percentage discounts apply to C-Defense bundles. One code per order.</li>
+          <li>Free product codes add the item to your next Shopee order at no cost.</li>
+          <li>Points never expire while your account is active.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+/* Rewards from the content doc. weight = chance out of 100. */
+const PRIZES = [
+  { label: "500 points", weight: 3, give: () => Points.add(500, "Spin the wheel: 500 points") },
+  { label: "Free shipping", weight: 15, give: () => Codes.add({ prefix: "SHIP", label: "Free shipping on Shopee" }) },
+  { label: "300 points", weight: 8, give: () => Points.add(300, "Spin the wheel: 300 points") },
+  { label: "Free DD Cream SPF 30", weight: 4, give: () => Codes.add({ prefix: "SPF", label: "Free DD Cream SPF 30 with any order" }) },
+  { label: "200 points", weight: 20, give: () => Points.add(200, "Spin the wheel: 200 points") },
+  { label: "30% off bundle", weight: 2, give: () => Codes.add({ prefix: "30OFF", label: "30% off a C-Defense bundle" }) },
+  { label: "20% off bundle", weight: 8, give: () => Codes.add({ prefix: "20OFF", label: "20% off a C-Defense bundle" }) },
+  { label: "Free Face Mist", weight: 5, give: () => Codes.add({ prefix: "MIST", label: "Free Face Mist with any order" }) },
+  { label: "10% off bundle", weight: 35, give: () => Codes.add({ prefix: "10OFF", label: "10% off a C-Defense bundle" }) }
+];
+const N = PRIZES.length, SEG = 360 / N;
+let rotation = 0, spinning = false;
+const today = () => new Date().toDateString();
+
+function drawWheel() {
+  const cx = 200, cy = 200, r = 196;
+  let s = "";
+  PRIZES.forEach((p, i) => {
+    const a0 = (i * SEG - 90) * Math.PI / 180, a1 = ((i + 1) * SEG - 90) * Math.PI / 180;
+    const x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0), x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+    const fill = i % 2 ? "var(--surface)" : "#e8913f", ink = i % 2 ? "var(--ink)" : "#1f140c";
+    s += `<path d="M${cx},${cy} L${x0},${y0} A${r},${r} 0 0 1 ${x1},${y1} Z" style="fill:${fill}" stroke="#e8913f" stroke-width="1.5"/>`;
+    const mid = i * SEG + SEG / 2;
+    const words = p.label.split(" "), half = Math.ceil(words.length / 2);
+    const l1 = words.slice(0, half).join(" "), l2 = words.slice(half).join(" ");
+    s += `<g transform="rotate(${mid} ${cx} ${cy})"><text x="${cx}" y="${cy - 130}" text-anchor="middle" style="fill:${ink}">${l1}</text>
+          <text x="${cx}" y="${cy - 114}" text-anchor="middle" style="fill:${ink}">${l2}</text></g>`;
+  });
+  s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e8913f" stroke-width="3"/>`;
+  document.getElementById("wheel").innerHTML = s;
+}
+
+function pick() {
+  let n = Math.random() * 100;
+  for (let i = 0; i < N; i++) { n -= PRIZES[i].weight; if (n < 0) return i; }
+  return N - 1;
+}
+
+function updateState() {
+  const used = ustore.get("lastSpin") === today();
+  const btn = document.getElementById("spinBtn");
+  btn.disabled = used || spinning;
+  document.getElementById("nextSpin").textContent = used ? "You've used today's spin. Come back tomorrow for another." : "";
+}
+
+function spin() {
+  if (spinning || !Auth.current() || ustore.get("lastSpin") === today()) return;
+  spinning = true; updateState();
+  const i = pick();
+  // land in the middle of segment i (with a little random offset), after 6 full turns
+  const offset = (Math.random() - .5) * SEG * .6;
+  const target = 360 - (i * SEG + SEG / 2) + offset;
+  rotation += 360 * 6 + ((target - rotation) % 360 + 360) % 360;
+  const wheel = document.getElementById("wheel");
+  wheel.style.transform = `rotate(${rotation}deg)`;
+  let ended = false;
+  const finish = () => {
+    if (ended) return; ended = true;
+    wheel.removeEventListener("transitionend", finish);
+    spinning = false; ustore.set("lastSpin", today());
+    PRIZES[i].give();
+    document.getElementById("resultTitle").textContent = `You won: ${PRIZES[i].label}`;
+    document.getElementById("resultText").textContent = PRIZES[i].label.includes("points")
+      ? "Added to your points balance." : "Your discount code is in your rewards wallet. Copy it and use it at Shopee checkout.";
+    toast(`You won ${PRIZES[i].label}`);
+    updateState();
+  };
+  wheel.addEventListener("transitionend", finish);
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(finish, 50);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  drawWheel(); updateState();
+  if (!Auth.current()) {
+    document.getElementById("result").innerHTML = loginPrompt("Your reward is saved to your account, so you'll need one to spin.");
+    document.getElementById("spinBtn").closest(".btn-row").hidden = true;
+    document.getElementById("resetSpin").hidden = true;
+  }
+  document.getElementById("odds").insertAdjacentHTML("beforeend", PRIZES.map(p => `<tr><td>${p.label}</td><td>${p.weight}%</td></tr>`).join(""));
+  document.getElementById("spinBtn").addEventListener("click", spin);
+  document.getElementById("resetSpin").addEventListener("click", () => { ustore.set("lastSpin", null); updateState(); toast("Spin reset for demo"); });
+});
+</script>
+</body>
+</html>

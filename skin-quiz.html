@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skin analysis | Dekatre</title>
+<meta name="description" content="Take the free Dekatre skin analysis to find your skin type and get a C-Defense routine adjusted for dry, oily, sensitive, acne-prone or mature skin.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Skin analysis | Dekatre">
+<meta property="og:description" content="Take the free Dekatre skin analysis to find your skin type and get a C-Defense routine adjusted for dry, oily, sensitive, acne-prone or mature skin.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .result-head { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; }
+  .result-routine { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 1.5rem; }
+  .result-routine ol { padding-left: 1.2rem; margin: 0; }
+  .result-routine li { margin-bottom: .5rem; }
+  @media (max-width: 700px) { .result-routine { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="routine.html">Skincare</a> / Skin analysis</nav>
+      <h1>What's your skin type?</h1>
+      <p class="lede">Six quick questions. You'll get your skin type and a C-Defense routine adjusted for it.</p>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="quiz" id="quiz" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+/* Each option adds points to one or more skin types. */
+const QUESTIONS = [
+  { q: "By midday, how does your skin usually feel?", opts: [
+    ["Tight or flaky", { dry: 2 }], ["Shiny all over", { oily: 2 }],
+    ["Shiny on my forehead and nose, normal or dry elsewhere", { combination: 2 }], ["Comfortable, not oily or dry", { normal: 2 }] ] },
+  { q: "How does your skin feel right after cleansing?", opts: [
+    ["Tight and uncomfortable", { dry: 1 }], ["Clean, but oily again within a few hours", { oily: 1 }],
+    ["Slightly tight on the cheeks only", { combination: 1 }], ["Fine", { normal: 1 }] ] },
+  { q: "How does your skin react to new products, heat or sudden temperature changes?", opts: [
+    ["It often stings, turns red or itches", { sensitive: 3 }], ["Sometimes, with certain products", { sensitive: 1 }],
+    ["Rarely or never", {}] ] },
+  { q: "How often do you get breakouts?", opts: [
+    ["Most weeks", { acne: 3 }], ["Sometimes, like during hormonal changes or stressful periods", { acne: 1 }], ["Rarely", {}] ] },
+  { q: "Which age group are you in?", opts: [
+    ["Under 25", {}], ["25 to 39", {}], ["40 to 54", { mature: 1 }], ["55 or over", { mature: 2 }] ] },
+  { q: "What concerns you most?", opts: [
+    ["Dryness and dullness", { dry: 1 }], ["Oiliness and enlarged pores", { oily: 1 }],
+    ["Fine lines, dark spots or loss of firmness", { mature: 2 }], ["Redness or irritation", { sensitive: 1 }], ] }
+];
+
+const RESULTS = {
+  dry: { title: "Dry skin", profile: "Your skin loses moisture easily and dehydrates quickly in heat, sun and air-conditioning.",
+    tips: ["Apply a slightly thicker layer of Mousse Moisturiser.", "Reapply Face Mist whenever skin feels dry.", "Use the Superserum Mask 3 times a week.", "Prioritise hydration after long periods in the sun or air-conditioning."], mask: "3 times a week" },
+  oily: { title: "Oily skin", profile: "Heat and humidity trigger extra oil, which raises the chance of clogged pores and breakouts.",
+    tips: ["Apply only a thin layer of Mousse Moisturiser.", "Use Face Mist sparingly to refresh skin.", "Use the Superserum Mask once a week.", "Cleanse after heavy sweating or outdoor activity."], mask: "Once a week" },
+  combination: { title: "Combination skin", profile: "Some areas need more hydration while others are naturally oilier.",
+    tips: ["Apply extra Mousse Moisturiser to dry areas only.", "Use the Superserum Mask twice a week.", "Watch how your skin changes when the weather shifts.", "Use Face Mist only when dry areas need it."], mask: "Twice a week" },
+  sensitive: { title: "Sensitive skin", profile: "Your skin reacts easily to UV, pollution and sudden temperature changes.",
+    tips: ["Use the Superserum Mask only when skin feels stressed.", "Focus on steady daily hydration.", "Never skip DD Cream SPF 30, even on cloudy days.", "Patch-test new products on your inner arm for 24 hours first."], mask: "Only when skin feels stressed" },
+  normal: { title: "Normal skin", profile: "Your skin is generally balanced but still needs protection from daily environmental stress.",
+    tips: ["Follow the standard Dekatre routine.", "Use the Superserum Mask twice a week.", "Increase hydration after long sun exposure.", "Keep SPF consistent every day."], mask: "Twice a week" },
+  acne: { title: "Acne-prone skin", profile: "Sweat, oil and pollutant build-up in Singapore's heat can clog pores and set off breakouts.",
+    tips: ["Cleanse morning and night, and again after heavy sweating.", "Apply a thin layer of Mousse Moisturiser. Skipping it can make skin produce more oil.", "Wear DD Cream SPF 30 daily; sun can darken post-acne marks.", "If breakouts are painful, cystic or leave scars, see a doctor or dermatologist."], mask: "Once a week" },
+  mature: { title: "Mature skin", profile: "Years of UV exposure add up. Your skin needs strong sun protection and extra moisture to stay firm and even.",
+    tips: ["Apply DD Cream SPF 30 to face, neck and the backs of your hands.", "Reapply SPF after two hours outdoors.", "Use a slightly thicker layer of Mousse Moisturiser at night.", "Use the Superserum Mask 3 times a week for antioxidant support."], mask: "3 times a week" }
+};
+
+let step = 0, answers = [];
+const box = document.getElementById("quiz");
+
+function showQuestion() {
+  const Q = QUESTIONS[step];
+  box.innerHTML = `
+    <div class="quiz-bar"><span style="width:${(step / QUESTIONS.length) * 100}%"></span></div>
+    <p class="quiz-count">Question ${step + 1} of ${QUESTIONS.length}</p>
+    <h2>${Q.q}</h2>
+    <div class="options">${Q.opts.map((o, i) => `<button class="option" aria-pressed="${answers[step] === i}" data-i="${i}">${o[0]}</button>`).join("")}</div>
+    <div class="quiz-nav">
+      <button class="btn btn--ghost" id="back" ${step === 0 ? "disabled" : ""}>Back</button>
+      <button class="btn" id="next" ${answers[step] == null ? "disabled" : ""}>${step === QUESTIONS.length - 1 ? "See my result" : "Next"}</button>
+    </div>`;
+  box.querySelectorAll(".option").forEach(b => b.addEventListener("click", () => { answers[step] = +b.dataset.i; showQuestion(); }));
+  box.querySelector("#back").addEventListener("click", () => { step--; showQuestion(); });
+  box.querySelector("#next").addEventListener("click", () => { step++; step < QUESTIONS.length ? showQuestion() : showResult(); });
+}
+
+function score() {
+  const s = { dry: 0, oily: 0, combination: 0, normal: 0, sensitive: 0, acne: 0, mature: 0 };
+  answers.forEach((a, qi) => Object.entries(QUESTIONS[qi].opts[a][1]).forEach(([k, v]) => s[k] += v));
+  // Strong special concerns take priority over the base type
+  if (s.acne >= 3) return "acne";
+  if (s.sensitive >= 3) return "sensitive";
+  if (s.mature >= 3) return "mature";
+  return ["dry", "oily", "combination", "normal"].sort((a, b) => s[b] - s[a])[0];
+}
+
+function showResult() {
+  const key = score(), r = RESULTS[key];
+  store.set("skinType", key);
+  box.innerHTML = `
+    <div class="quiz-bar"><span style="width:100%"></span></div>
+    <div class="panel">
+      <p class="quiz-count">Your result</p>
+      <h2>${r.title}</h2>
+      <p class="lede">${r.profile}</p>
+      <h3 style="margin-top:1.5rem">Adjust your routine</h3>
+      <ul class="check-list">${r.tips.map(t => `<li>${t}</li>`).join("")}</ul>
+      <div class="result-routine">
+        <div class="panel panel--plain"><h3>Your morning</h3><ol><li>Creamy Wash</li><li>Face Mist</li><li>Mousse Moisturiser</li><li>DD Cream SPF 30</li></ol></div>
+        <div class="panel panel--plain"><h3>Your night</h3><ol><li>Creamy Wash</li><li>Face Mist</li><li>Superserum Mask: ${r.mask.toLowerCase()}</li><li>Mousse Moisturiser</li></ol></div>
+      </div>
+      <div class="btn-row">
+        ${shopeeButton(BUNDLES.full.shopee, "Get the full bundle on Shopee")}
+        <a class="btn btn--ghost" href="products.html">See all products</a>
+        <a class="btn btn--ghost" href="community.html?type=${key}">Read reviews from people like you</a>
+        <button class="btn btn--ghost" id="retake">Retake</button>
+      </div>
+      <p class="small muted" style="margin-top:1.5rem">This quiz gives general guidance, not a diagnosis. If you have a skin condition, check with a doctor or pharmacist.</p>
+    </div>`;
+  box.querySelector("#retake").addEventListener("click", () => { step = 0; answers = []; showQuestion(); });
+  box.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // answer chosen on the home page, e.g. skin-quiz.html?a=2
+  const a = new URLSearchParams(location.search).get("a");
+  if (a !== null && QUESTIONS[0].opts[+a]) { answers[0] = +a; step = 1; }
+  showQuestion();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routine guide | Dekatre</title>
+<meta name="description" content="A simple morning and night vitamin C skincare routine for hot, humid Singapore weather, with a step checklist and mask timer.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Routine guide | Dekatre">
+<meta property="og:description" content="A simple morning and night vitamin C skincare routine for hot, humid Singapore weather, with a step checklist and mask timer.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .toggle { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 4px; margin-bottom: 2rem; }
+  .toggle button { background: none; border: 0; font-weight: 600; color: var(--ink); padding: .6rem 1.4rem; border-radius: 999px; }
+  .toggle button[aria-selected="true"] { background: var(--orange); color: var(--on-accent); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--orange); color: var(--on-accent); border-radius: var(--radius); padding: 1.25rem; display: flex; flex-direction: column; position: relative; transition: opacity .2s; }
+  .step.done { opacity: .55; }
+  .step .num { font-family: var(--display); font-size: 1.4rem; }
+  .step img { height: 130px; width: auto; margin: .75rem auto; object-fit: contain; }
+  .step h3 { font-size: 1.45rem; margin-bottom: .4rem; }
+  .step p { font-size: .9rem; margin-bottom: .6rem; }
+  .step .freq { font-size: .82rem; font-weight: 600; margin-top: auto; }
+  .step label { display: flex; gap: .5rem; align-items: center; font-weight: 600; margin: .9rem 0 0; color: var(--on-accent); }
+  .step input { width: 1.1rem; height: 1.1rem; accent-color: #000; }
+  .progress { margin: 0 0 1.5rem; color: var(--muted); }
+  .timer { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: .6rem; }
+  .timer output { font-family: var(--display); font-size: 1.6rem; min-width: 4ch; }
+  .timer .btn { padding: .45rem 1rem; }
+  .routine-intro { padding-block: clamp(2rem, 4vw, 3.25rem) 1.25rem; border-bottom: 1px solid var(--line-soft); }
+  .routine-intro h1 { max-width: 18ch; margin-bottom: .8rem; }
+  .routine-intro .lede { max-width: 68ch; margin-bottom: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head page-banner page-banner--routine has-video routine-video-banner" aria-label="Skincare routine video">
+    <video class="banner-video" autoplay muted loop playsinline preload="metadata" poster="images/routine-video-poster.jpg" tabindex="-1" aria-hidden="true">
+      <source src="videos/routine-guide-banner.mp4" type="video/mp4">
+    </video>
+  </header>
+
+  <section class="routine-intro">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / Skincare / Routine guide</nav>
+      <h1>A simpler routine for everyday sun care</h1>
+      <p class="lede">Cleanse, refresh, moisturise and protect. Tick off each step as you go; your progress resets every day.</p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="toggle" role="tablist" aria-label="Routine time">
+        <button role="tab" aria-selected="true" data-time="am">Morning</button>
+        <button role="tab" aria-selected="false" data-time="pm">Night</button>
+      </div>
+      <p class="progress" id="progress" aria-live="polite"></p>
+      <ol class="steps" id="steps"></ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap panel split">
+      <div>
+        <h2>Ready for a routine made for your skin?</h2>
+        <p>Everyone's skin is different. The skin analysis takes about a minute and adjusts these steps for your skin type.</p>
+      </div>
+      <div><a class="btn" href="skin-quiz.html">Start the skin analysis</a></div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+const ROUTINE = {
+  am: [
+    { id: "wash", how: "Massage onto damp skin, then rinse thoroughly with water.", freq: "Every morning" },
+    { id: "mist", how: "Hold the bottle about 20 cm from your face and spray evenly. Reapply during the day in heat or air-conditioning.", freq: "Every morning" },
+    { id: "moisturiser", how: "Apply evenly to the face and neck.", freq: "Every morning" },
+    { id: "ddcream", how: "Apply evenly across face and neck as the last step. Reapply after two hours outdoors.", freq: "Every morning" }
+  ],
+  pm: [
+    { id: "wash", how: "Massage onto damp skin and rinse thoroughly.", freq: "Every night" },
+    { id: "mist", how: "Spray evenly across the face after cleansing.", freq: "Every night" },
+    { id: "mask", how: "Place over cleansed skin for 10 to 15 minutes. Remove and pat in the remaining serum. No rinsing needed.", freq: "2 to 3 times a week", timer: true },
+    { id: "moisturiser", how: "Apply evenly to face and neck as the last step of your evening.", freq: "Every night" }
+  ]
+};
+const today = new Date().toDateString();
+let time = new Date().getHours() >= 17 ? "pm" : "am";
+
+function getDone() { const d = store.get("routine", {}); return d.date === today ? d : { date: today, am: [], pm: [] }; }
+
+function render() {
+  document.querySelectorAll("[data-time]").forEach(b => b.setAttribute("aria-selected", b.dataset.time === time));
+  const done = getDone()[time];
+  document.getElementById("steps").innerHTML = ROUTINE[time].map((s, i) => {
+    const p = PRODUCTS[s.id]; const checked = done.includes(i);
+    return `<li class="step ${checked ? "done" : ""}">
+      <span class="num">Step ${i + 1}</span>
+      <img src="${p.img}" alt="">
+      <h3>${p.short}</h3>
+      <p>${s.how}</p>
+      ${s.timer ? `<div class="timer"><output id="tOut">15:00</output><button class="btn btn--dark" id="tBtn">Start 15-min timer</button></div>` : ""}
+      <p class="freq">${s.freq}</p>
+      <label><input type="checkbox" data-step="${i}" ${checked ? "checked" : ""}> Done</label>
+    </li>`;
+  }).join("");
+  document.getElementById("progress").textContent = `${done.length} of ${ROUTINE[time].length} ${time === "am" ? "morning" : "night"} steps done today`;
+  const tBtn = document.getElementById("tBtn"); if (tBtn) tBtn.addEventListener("click", startTimer);
+}
+
+let tInt = null;
+function startTimer() {
+  const out = document.getElementById("tOut"), btn = document.getElementById("tBtn");
+  if (tInt) { clearInterval(tInt); tInt = null; out.textContent = "15:00"; btn.textContent = "Start 15-min timer"; return; }
+  let left = 15 * 60; btn.textContent = "Stop timer";
+  tInt = setInterval(() => {
+    left--;
+    const o = document.getElementById("tOut"), b = document.getElementById("tBtn");
+    if (o) { o.textContent = `${String(Math.floor(left / 60)).padStart(2, "0")}:${String(left % 60).padStart(2, "0")}`; b.textContent = "Stop timer"; }
+    if (left <= 0) { clearInterval(tInt); tInt = null; if (b) b.textContent = "Start 15-min timer"; toast("Time's up. Remove the mask and pat in the serum."); }
+  }, 1000);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  render();
+  document.querySelectorAll("[data-time]").forEach(b => b.addEventListener("click", () => { time = b.dataset.time; render(); }));
+  document.getElementById("steps").addEventListener("change", e => {
+    if (!e.target.matches("[data-step]")) return;
+    const d = getDone(); const i = +e.target.dataset.step;
+    d[time] = e.target.checked ? [...new Set([...d[time], i])] : d[time].filter(x => x !== i);
+    store.set("routine", d);
+    if (d[time].length === ROUTINE[time].length) toast(`${time === "am" ? "Morning" : "Night"} routine complete`);
+    render();
+  });
+});
+</script>
+</body>
+</html>

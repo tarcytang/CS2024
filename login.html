@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in or sign up | Dekatre</title>
+<meta name="description" content="Create a Dekatre account to collect points from skin trivia and daily spins, and redeem them for Shopee discount codes.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Log in or sign up | Dekatre">
+<meta property="og:description" content="Create a Dekatre account to collect points from skin trivia and daily spins, and redeem them for Shopee discount codes.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .auth { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  @media (max-width: 860px) { .auth { grid-template-columns: 1fr; } .auth .why { order: 2; } }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 999px; padding: 4px; margin-bottom: 1.5rem; }
+  .tabs button { background: none; border: 0; color: var(--ink); padding: .65rem; border-radius: 999px; }
+  .tabs button[aria-selected="true"] { background: var(--orange); color: var(--on-accent); }
+  .pw-hint { font-size: .82rem; color: var(--muted); margin-top: .3rem; }
+  .perks { list-style: none; padding: 0; margin: 1.5rem 0 0; border-top: 1px solid var(--line); }
+  .perks li { display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line-soft); align-items: baseline; }
+  .perks .n { font-family: var(--display); font-size: 2.2rem; color: var(--accent-text); line-height: 1; }
+  .welcome { text-align: left; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / Account</nav>
+      <h1 id="title">Your Dekatre account</h1>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap auth">
+      <div class="why">
+        <p class="lede">An account keeps your points, vouchers and daily spins in one place, so nothing you earn gets lost.</p>
+        <ul class="perks">
+          <li><span class="n">+50</span><span>Welcome points the moment you sign up</span></li>
+          <li><span class="n">+10</span><span>For every correct answer in skin trivia</span></li>
+          <li><span class="n">Daily</span><span>Free spin for points, free shipping or money off</span></li>
+          <li><span class="n">+20</span><span>For each community review you post</span></li>
+        </ul>
+      </div>
+
+      <div class="panel" id="authBox">
+        <div class="tabs" role="tablist" aria-label="Account">
+          <button role="tab" id="tabLogin" aria-selected="true" aria-controls="loginForm">Log in</button>
+          <button role="tab" id="tabSignup" aria-selected="false" aria-controls="signupForm">Sign up</button>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <div class="field"><label for="lEmail">Email</label><input type="email" id="lEmail" autocomplete="email"></div>
+          <div class="field"><label for="lPass">Password</label><input type="password" id="lPass" autocomplete="current-password"></div>
+          <p class="error" id="lErr" role="alert"></p>
+          <button class="btn" type="submit" style="width:100%">Log in</button>
+          <p class="small muted" style="margin:1rem 0 0">New to Dekatre? <a href="#" data-switch="signup">Create an account</a></p>
+        </form>
+
+        <form id="signupForm" novalidate hidden>
+          <div class="field"><label for="sName">Name</label><input type="text" id="sName" autocomplete="name" maxlength="40"></div>
+          <div class="field"><label for="sEmail">Email</label><input type="email" id="sEmail" autocomplete="email"></div>
+          <div class="field"><label for="sPass">Password</label><input type="password" id="sPass" autocomplete="new-password" aria-describedby="pwHint">
+            <p class="pw-hint" id="pwHint">At least 8 characters, with a letter and a number.</p></div>
+          <div class="field"><label for="sPass2">Confirm password</label><input type="password" id="sPass2" autocomplete="new-password"></div>
+          <div class="field">
+            <label class="checkbox"><input type="checkbox" id="sConsent">
+              <span>I agree to Dekatre collecting and using my name, email, points and activity on this site to run my account and rewards, as described in the <a href="privacy.html">privacy policy</a>.</span></label>
+          </div>
+          <div class="field">
+            <label class="checkbox"><input type="checkbox" id="sMarketing">
+              <span>Email me skincare tips and offers (optional). I can unsubscribe at any time.</span></label>
+          </div>
+          <p class="error" id="sErr" role="alert"></p>
+          <button class="btn" type="submit" style="width:100%">Create account</button>
+          <p class="small muted" style="margin:1rem 0 0">Already have an account? <a href="#" data-switch="login">Log in</a></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const next = (params.get("next") || "rewards.html").replace(/[^a-z0-9\-.]/gi, "");
+
+function setMode(mode) {
+  const signup = mode === "signup";
+  tabLogin.setAttribute("aria-selected", !signup); tabSignup.setAttribute("aria-selected", signup);
+  loginForm.hidden = signup; signupForm.hidden = !signup;
+  document.getElementById("title").textContent = signup ? "Create your account" : "Welcome back";
+}
+
+function showWelcome() {
+  const u = Auth.current();
+  document.getElementById("title").textContent = `Hi, ${u.name.split(" ")[0]}`;
+  document.getElementById("authBox").innerHTML = `<div class="welcome">
+    <h2 style="font-size:2rem">You're logged in</h2>
+    <p>Signed in as ${u.email}. You have ${Points.get().balance} points.</p>
+    <div class="btn-row"><a class="btn" href="${next}">Continue</a><button class="btn btn--ghost" id="out">Log out</button></div></div>`;
+  document.getElementById("out").addEventListener("click", () => { Auth.logOut(); location.reload(); });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (Auth.current()) return showWelcome();
+  setMode(params.get("mode") === "signup" ? "signup" : "login");
+  tabLogin.addEventListener("click", () => setMode("login"));
+  tabSignup.addEventListener("click", () => setMode("signup"));
+  document.querySelectorAll("[data-switch]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); setMode(a.dataset.switch); }));
+
+  loginForm.addEventListener("submit", async e => {
+    e.preventDefault(); lErr.textContent = "";
+    if (!lEmail.value.trim() || !lPass.value) return lErr.textContent = "Enter your email and password.";
+    const r = await Auth.logIn(lEmail.value, lPass.value);
+    if (!r.ok) return lErr.textContent = r.error;
+    location.href = next;
+  });
+
+  signupForm.addEventListener("submit", async e => {
+    e.preventDefault(); sErr.textContent = "";
+    const name = sName.value.trim(), email = sEmail.value.trim(), pw = sPass.value;
+    if (!name) return sErr.textContent = "Enter your name.";
+    if (!/^\S+@\S+\.\S+$/.test(email)) return sErr.textContent = "Enter a valid email address, like name@example.com.";
+    if (pw.length < 8 || !/[a-z]/i.test(pw) || !/\d/.test(pw)) return sErr.textContent = "Your password needs at least 8 characters, with a letter and a number.";
+    if (pw !== sPass2.value) return sErr.textContent = "The two passwords don't match.";
+    if (!sConsent.checked) return sErr.textContent = "Tick the consent box to create your account.";
+    const r = await Auth.signUp({ name, email, password: pw, marketing: sMarketing.checked });
+    if (!r.ok) return sErr.textContent = r.error;
+    toast("Account created. You've got 50 welcome points.");
+    setTimeout(() => location.href = next, 900);
+  });
+});
+</script>
+</body>
+</html>

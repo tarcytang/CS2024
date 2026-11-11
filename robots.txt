@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tarcytang.github.io/CS2024/sitemap.xml

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get the app | Dekatre</title>
+<meta name="description" content="The Dekatre app tracks UV, heat, humidity and air quality where you are, and tells you what your skin needs.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Get the app | Dekatre">
+<meta property="og:description" content="The Dekatre app tracks UV, heat, humidity and air quality where you are, and tells you what your skin needs.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .demo { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+  @media (max-width: 860px) { .demo { grid-template-columns: 1fr; } .phone { margin-inline: auto; } }
+  .screen-tabs { display: grid; gap: .5rem; margin-top: 1.5rem; }
+  .screen-tabs button { text-align: left; background: rgba(var(--ink-rgb),.04); border: 1.5px solid rgba(var(--ink-rgb),.35); color: var(--ink); border-radius: var(--radius); padding: 1rem 1.2rem; }
+  .screen-tabs button strong { display: block; font-family: var(--display); font-weight: 400; font-size: 1.4rem; }
+  .screen-tabs button span { color: var(--muted); font-size: .9rem; }
+  .screen-tabs button[aria-selected="true"] { border-color: var(--orange); background: rgba(232,145,63,.1); }
+
+  /* The interactive app preview follows the same light sage palette as the website. */
+  .phone { --bg: #f6f6ee; --surface: #fffdf8; --ink: #2e3b31; --ink-rgb: 46, 59, 49; --muted: #647064; --accent-text: #9b5316; --line-soft: rgba(46,59,49,.16); --photo-deep: #dbe5d2; color: var(--ink);
+    width: 300px; max-width: 100%; height: 610px; border-radius: 44px; border: 10px solid #d8ddcf; background: var(--bg); position: relative; overflow: hidden; box-shadow: 0 0 0 1px var(--line), 0 30px 80px rgba(72,96,62,.16); }
+  .phone::before { content: ""; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 90px; height: 24px; border-radius: 999px; background: #d8ddcf; z-index: 3; }
+  .scr { position: absolute; inset: 0; padding: 48px 18px 18px; display: none; flex-direction: column; gap: .7rem; font-size: .85rem; overflow-y: auto; }
+  .scr.on { display: flex; }
+  .scr h3 { font-size: 1.6rem; margin: 0; }
+  .tile { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 14px; padding: .8rem; }
+  .tile .n { font-family: var(--display); font-size: 1.9rem; line-height: 1; color: var(--accent-text); }
+  .tile .l { color: var(--muted); font-size: .75rem; }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .alert { background: var(--orange); color: var(--on-accent); border-radius: 14px; padding: .9rem; }
+  .alert strong { display: block; font-size: .95rem; }
+  .photos { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .photos div { aspect-ratio: 3/4; border-radius: 12px; background: radial-gradient(circle at 50% 40%, rgba(232,145,63,.45), var(--photo-deep) 70%); display: flex; align-items: flex-end; padding: .5rem; font-size: .75rem; }
+  .streak { display: flex; gap: .3rem; }
+  .streak span { flex: 1; height: 26px; border-radius: 6px; background: var(--orange); }
+  .streak span.off { background: var(--line-soft); }
+  .meter { height: 8px; border-radius: 999px; background: var(--line-soft); overflow: hidden; margin-top: .4rem; }
+  .meter i { display: block; height: 100%; background: var(--orange); }
+
+  .onboard { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; counter-reset: o; }
+  .onboard li { counter-increment: o; border-top: 2px solid var(--orange); padding-top: 1rem; }
+  .onboard li::before { content: "Step " counter(o); display: block; color: var(--accent-text); font-size: .85rem; margin-bottom: .3rem; }
+  .onboard h3 { font-size: 1.35rem; }
+  @media (max-width: 900px) { .onboard { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .onboard { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head page-banner page-banner--app">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / App</nav>
+      <h1>Your personal climate defence companion</h1>
+      <p class="lede">Conditions change through the day, and so does your skin. The Dekatre app tracks UV, heat, humidity and air quality where you are, and tells you what your skin needs.</p>
+      <div class="btn-row"><a class="btn" href="#get">Download the app</a></div>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap demo">
+      <div>
+        <h2>Try it here</h2>
+        <p class="muted">Tap a feature to preview it on the phone. The dashboard shows today's real readings for Singapore.</p>
+        <div class="screen-tabs" role="tablist" id="screenTabs">
+          <button role="tab" aria-selected="true" data-s="0"><strong>Environment dashboard</strong><span>UV, temperature, humidity and air quality</span></button>
+          <button role="tab" aria-selected="false" data-s="1"><strong>UV alerts</strong><span>A nudge when sun protection matters most</span></button>
+          <button role="tab" aria-selected="false" data-s="2"><strong>Progress tracker</strong><span>Weekly photos and routine streaks</span></button>
+          <button role="tab" aria-selected="false" data-s="3"><strong>Personal insights</strong><span>Your main environmental challenge</span></button>
+        </div>
+      </div>
+      <div class="phone" aria-label="App preview">
+        <div class="scr on">
+          <p class="muted mb-0">Today, Singapore</p><h3>Your environment</h3>
+          <div class="tiles">
+            <div class="tile"><div class="l">UV index</div><div class="n" data-live="uv">–</div><div class="l" data-live="uv-band"></div></div>
+            <div class="tile"><div class="l" data-live="psi-label">PSI</div><div class="n" data-live="psi">–</div><div class="l" data-live="psi-band"></div></div>
+            <div class="tile"><div class="l">Temperature</div><div class="n" data-live="temp">–</div></div>
+            <div class="tile"><div class="l">Humidity</div><div class="n" data-live="rh">–</div></div>
+          </div>
+          <div class="alert"><strong>Recommended now</strong><span data-live-advice></span></div>
+          <p class="l muted small mb-0" data-live-source style="font-size:.7rem"></p>
+        </div>
+        <div class="scr">
+          <p class="muted mb-0">Notifications</p><h3>UV alerts</h3>
+          <div class="alert"><strong>UV is very high (9)</strong>Reapply DD Cream SPF 30 before heading out for lunch.</div>
+          <div class="tile"><strong>Yesterday, 2:10pm</strong><br><span class="muted">UV peaked at 10. You were outdoors for 45 minutes.</span></div>
+          <div class="tile"><strong>Yesterday, 8:00am</strong><br><span class="muted">Morning routine reminder: don't skip SPF, even if it's cloudy.</span></div>
+          <div class="tile"><strong>Alert threshold</strong><br><span class="muted">Notify me when UV is 6 or higher</span><div class="meter"><i style="width:55%"></i></div></div>
+        </div>
+        <div class="scr">
+          <p class="muted mb-0">Week 4</p><h3>Your progress</h3>
+          <div class="photos"><div>Week 1</div><div>Week 4</div></div>
+          <div class="tile"><div class="l">Routine streak</div><div class="n">12 days</div>
+            <div class="streak" style="margin-top:.5rem"><span></span><span></span><span></span><span></span><span></span><span class="off"></span><span></span></div></div>
+          <div class="tile"><div class="l">Next photo</div><strong>Sunday, same lighting as last week</strong></div>
+        </div>
+        <div class="scr">
+          <p class="muted mb-0">Based on your profile</p><h3>Your main challenge</h3>
+          <div class="alert"><strong>High dehydration risk</strong>You spend 7+ hours a day in air-conditioning and commute outdoors.</div>
+          <div class="tile"><div class="l">UV exposure</div><div class="meter"><i style="width:60%"></i></div></div>
+          <div class="tile"><div class="l">Pollution exposure</div><div class="meter"><i style="width:40%"></i></div></div>
+          <div class="tile"><div class="l">Dehydration risk</div><div class="meter"><i style="width:85%"></i></div></div>
+          <div class="tile"><strong>Try this</strong><br><span class="muted">Mist every 3 hours indoors and use the Superserum Mask 3 times a week.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <h2>Getting started</h2>
+      <ol class="onboard">
+        <li><h3>Download Dekatre</h3><p class="small muted">Free on iPhone and Android.</p></li>
+        <li><h3>Create your account</h3><p class="small muted">Your points and vouchers carry over from the website.</p></li>
+        <li><h3>Allow location access</h3><p class="small muted">Used for UV, weather and air quality where you are. You can turn it off any time.</p></li>
+        <li><h3>Complete your profile</h3><p class="small muted">Skin type, daily activities and time spent outdoors.</p></li>
+        <li><h3>Start tracking</h3><p class="small muted">Get insights and routine tips for your day.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--band" id="get">
+    <div class="wrap split">
+      <div>
+        <h2>Protect smarter. Track better.</h2>
+        <p>Most skincare apps only talk about products. Dekatre connects your environment, the climate and your skin, so you can adjust your routine to the day you're actually having.</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--dark" href="#" onclick="toast('App Store link coming soon'); return false;">Download for iPhone</a>
+        <a class="btn btn--dark" href="#" onclick="toast('Google Play link coming soon'); return false;">Download for Android</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script src="js/live.js?v=12"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const tabs = document.querySelectorAll("#screenTabs [data-s]"), scr = document.querySelectorAll(".scr");
+  tabs.forEach(t => t.addEventListener("click", () => {
+    tabs.forEach(x => x.setAttribute("aria-selected", x === t));
+    scr.forEach((s, i) => s.classList.toggle("on", i === +t.dataset.s));
+    // on phones the preview sits below the buttons, so bring it into view
+    if (window.innerWidth <= 860) document.querySelector(".phone").scrollIntoView({ behavior: "smooth", block: "center" });
+  }));
+});
+</script>
+</body>
+</html>

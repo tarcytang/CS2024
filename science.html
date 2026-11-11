@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The science and ingredients | Dekatre</title>
+<meta name="description" content="The science behind C-Defense: how vitamin C, hydration and SPF 30 protect skin from heat, pollution and UV damage.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="How Dekatre helps | Dekatre">
+<meta property="og:description" content="The science behind C-Defense: how vitamin C, hydration and SPF 30 protect skin from heat, pollution and UV damage.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .explorer-tabs { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--radius) var(--radius) 0 0; }
+  .explorer-tabs button { background: rgba(var(--ink-rgb),.04); border: 0; border-right: 1px solid var(--line); font-weight: 500; color: var(--ink); padding: 1.1rem 1rem; text-align: left; font-size: 1rem; }
+  .explorer-tabs button:last-child { border-right: 0; }
+  .explorer-tabs button[aria-selected="true"] { background: var(--orange); color: var(--on-accent); }
+  .explorer-panel { border: 1px solid var(--line); border-top: 0; border-radius: 0 0 var(--radius) var(--radius); display: grid; grid-template-columns: 1fr 1fr; }
+  .explorer-panel > div { padding: clamp(1.25rem, 3vw, 2rem); }
+  .explorer-panel > div + div { border-left: 1px solid var(--line-soft); display: grid; grid-template-columns: 1fr 120px; gap: 1rem; align-items: center; }
+  .explorer-panel img { max-height: 170px; width: auto; margin-inline: auto; }
+  .explorer-panel h3 { margin-bottom: .6rem; }
+  .explorer-panel .label { color: var(--muted); font-size: .85rem; margin-bottom: .4rem; }
+  @media (max-width: 760px) {
+    .explorer-tabs { grid-template-columns: 1fr 1fr; } .explorer-tabs button:nth-child(2) { border-right: 0; }
+    .explorer-tabs button:nth-child(-n+2) { border-bottom: 1px solid var(--line-soft); }
+    .explorer-panel { grid-template-columns: 1fr; } .explorer-panel > div + div { border-left: 0; border-top: 1px solid var(--line-soft); }
+  }
+
+  /* free radical diagram */
+  .radicals { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; }
+  .radicals .col { border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 1.25rem; }
+  .radicals .arrow { font-family: var(--display); font-size: 2.5rem; color: var(--accent-text); }
+  .src { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+  @media (max-width: 760px) { .radicals { grid-template-columns: 1fr; } .radicals .arrow { transform: rotate(90deg); justify-self: center; } }
+
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
+  .pillars > div { padding: 1.5rem 1.25rem 0 0; }
+  .pillars .what { color: var(--accent-text); font-size: .9rem; margin-bottom: .3rem; }
+  @media (max-width: 860px) { .pillars { grid-template-columns: 1fr 1fr; gap: 1rem; } }
+  @media (max-width: 520px) { .pillars { grid-template-columns: 1fr; } }
+  .refs { font-size: .85rem; color: var(--muted); padding-left: 1.2rem; }
+  .refs li { margin-bottom: .5rem; word-break: break-word; }
+  .ing-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .ing { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 14px; padding: 1.25rem; box-shadow: var(--shadow); }
+  .ing h3 { font-size: 1.35rem; margin-bottom: .3rem; }
+  .ing .in { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; margin-top: .75rem; }
+  .ing .in img { height: 44px; width: auto; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head page-banner page-banner--science">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / Learn / The science</nav>
+      <h1>The science behind C-Defense</h1>
+      <p class="lede">Three things keep skin healthy in a hot, humid city: antioxidants, hydration and sun protection. Here's how C-Defense delivers each one, and what every ingredient does.</p>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <h2>Pick a skin concern</h2>
+      <p class="muted">See what it does to your skin and which product deals with it.</p>
+      <div style="margin-top:1.5rem">
+        <div class="explorer-tabs" role="tablist" id="tabs"></div>
+        <div class="explorer-panel" role="tabpanel" id="panel" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ingredients" style="scroll-margin-top:80px">
+    <div class="wrap">
+      <h2>Ingredients, one by one</h2>
+      <p class="lede">What each key ingredient does, and which products it's in. Taken from the packaging and Wardah's product descriptions.</p>
+      <div class="ing-grid" id="ingGrid"></div>
+      <div class="panel" style="margin-top:1.5rem">
+        <h3>Certifications</h3>
+        <p class="mb-0">Wardah products are <strong>halal certified by LPPOM MUI</strong>, Indonesia's national halal authority. The Superserum Mask and Mousse Moisturiser are <strong>dermatologically tested</strong>, and the Mousse Moisturiser is <strong>non-comedogenic</strong>. The mask's sheet is <strong>100% organic cotton</strong> and biodegradable. The products themselves are not certified organic.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <h2>Vitamin C, the heart of C-Defense</h2>
+        <p>When skin is exposed to UV and pollution, it produces free radicals. These cause oxidative stress, which is linked to premature ageing, dullness and pigmentation.<sup><a href="#ref1">1</a></sup></p>
+        <p>Vitamin C is an antioxidant: it neutralises free radicals before they damage healthy skin cells.</p>
+      </div>
+      <ul class="check-list">
+        <li>Helps reduce oxidative stress</li>
+        <li>Supports brighter-looking, more radiant skin</li>
+        <li>Supports healthy collagen production</li>
+        <li>Helps protect skin from environmental damage</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <h2>Antioxidants against free radicals</h2>
+      <div class="radicals" style="margin-top:1.5rem">
+        <div class="col">
+          <h3>Free radicals</h3>
+          <p class="small mb-0">Unstable molecules that attack healthy skin cells and cause visible signs of ageing.</p>
+          <div class="src"><span class="tag">UV radiation</span><span class="tag">Air pollution</span><span class="tag">Heat</span></div>
+        </div>
+        <div class="arrow" aria-hidden="true">⟶</div>
+        <div class="col" style="border-color:var(--orange)">
+          <h3>Antioxidants neutralise them</h3>
+          <p class="small mb-0">Antioxidants like vitamin C stabilise these molecules before they cause significant damage. That's why antioxidant skincare matters more as environmental stress rises.<sup><a href="#ref2">2</a></sup></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid grid-2" style="gap:2.5rem">
+      <div>
+        <h2>Hydration that holds</h2>
+        <p>Transepidermal water loss (TEWL) is the moisture that escapes out through your skin. When it rises, the barrier weakens and skin feels dry, irritated and sensitive. A 2022 review of 15 studies found that every study on air pollution showed higher TEWL in people exposed to particulate matter or NO₂, while results for temperature and season were mixed.<sup><a href="#ref3">3</a></sup></p>
+        <p>The Face Mist, Superserum Mask and Mousse Moisturiser help retain water in the skin, reduce moisture loss and support the barrier, so skin copes better with daily stress.</p>
+      </div>
+      <div>
+        <h2>SPF 30 against UV damage</h2>
+        <p>The DD Cream contains SPF 30. UV exposure is a major cause of premature skin ageing, including photoageing, hyperpigmentation, fine lines and loss of elasticity.<sup><a href="#ref1">1</a></sup></p>
+        <p>Daily sun protection limits the cumulative effect of UV, making it an essential part of any climate-adaptive routine.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <h2>Why the formula works together</h2>
+      <div class="pillars" style="margin-top:1.5rem">
+        <div><p class="what">Vitamin C</p><h3>Antioxidant defence</h3><p class="small muted">Neutralises free radicals from pollution and UV.</p></div>
+        <div><p class="what">Moisturising agents</p><h3>Hydration support</h3><p class="small muted">Maintain the skin barrier and reduce moisture loss.</p></div>
+        <div><p class="what">SPF 30</p><h3>UV protection</h3><p class="small muted">Daily defence against sun-induced damage.</p></div>
+        <div><p class="what">Nourishing formulas</p><h3>Recovery support</h3><p class="small muted">Replenish skin after a day of exposure.</p></div>
+      </div>
+      <div class="btn-row"><a class="btn" href="products.html">Shop the bundle</a><a class="btn btn--ghost" href="climate-quiz.html">Test yourself for points</a></div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <h2 style="font-size:1.6rem">References</h2>
+      <ol class="refs">
+        <li id="ref1">The Impact of Pollution and Climate Change on Skin Health: Mechanisms, Protective Strategies, and Future Directions. JAAD Reviews. <a href="https://www.jaadreviews.org/article/S2950-1989%2825%2900061-3/fulltext" target="_blank" rel="noopener">jaadreviews.org</a></li>
+        <li id="ref2">The Environmental Determinants of Skin Health: Linking Climate Change, Air Pollution, and the Dermatologic Disease Burden. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12732634/" target="_blank" rel="noopener">PubMed Central</a></li>
+        <li id="ref3">Green M, Kashetsky N, Feschuk A, Maibach HI. Transepidermal water loss (TEWL): Environment and pollution, a systematic review. Skin Health and Disease, 2022. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9168018/" target="_blank" rel="noopener">PubMed Central</a></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+const STRESSORS = [
+  { name: "UV exposure", does: "UV is a leading cause of photoageing. Over time it causes fine lines, dark spots and loss of elasticity.", product: "ddcream",
+    helps: "SPF 30 shields skin from daily sun, reducing UV damage and premature ageing." },
+  { name: "Pollution and dust", does: "Particles settle on skin and create free radicals that break down collagen, causing dullness and uneven tone.", product: "wash",
+    helps: "Removes dirt, sweat and pollutant particles before they build up on the skin." },
+  { name: "Heat and dry air", does: "Heat and air-conditioning speed up water loss through the skin, weakening the barrier and causing irritation.", product: "moisturiser",
+    helps: "Locks in hydration and supports the skin barrier. Pair with the Face Mist through the day." },
+  { name: "Sweat and oil", does: "Heat increases sweating and oil production, which clogs pores and leads to breakouts.", product: "mist",
+    helps: "Refreshes and rehydrates without heavy layers, so skin doesn't overproduce oil to compensate." }
+];
+let current = 0;
+function render() {
+  document.getElementById("tabs").innerHTML = STRESSORS.map((s, i) =>
+    `<button role="tab" aria-selected="${i === current}" data-i="${i}">${s.name}</button>`).join("");
+  const s = STRESSORS[current], p = PRODUCTS[s.product];
+  document.getElementById("panel").innerHTML = `
+    <div><p class="label">What it does to your skin</p><h3>${s.name}</h3><p class="mb-0">${s.does}</p></div>
+    <div><div><p class="label">How Dekatre helps</p><h3>${p.short}</h3><p>${s.helps}</p>${shopeeButton(p.shopee)}</div>
+      <img src="${p.img}" alt="${p.name}"></div>`;
+}
+function renderIngredients() {
+  const map = {};
+  Object.entries(PRODUCTS).forEach(([id, p]) => p.ingredients.forEach(([n, d]) => {
+    const key = n.split(" (")[0];
+    (map[key] = map[key] || { name: n, does: d, in: [] }).in.push(id);
+  }));
+  map["Vitamin C"].does = "An antioxidant that helps neutralise free radicals from sun and pollution, and helps skin look brighter and more even. It's in all five products.";
+  document.getElementById("ingGrid").innerHTML = Object.values(map).map(i => `
+    <article class="ing"><h3>${i.name}</h3><p class="small mb-0">${i.does}</p>
+      <div class="in" aria-label="Found in">${i.in.map(id => `<img src="${PRODUCTS[id].img}" alt="${PRODUCTS[id].short}" title="${PRODUCTS[id].short}">`).join("")}</div></article>`).join("");
+}
+document.addEventListener("DOMContentLoaded", () => {
+  renderIngredients();
+  render();
+  document.getElementById("tabs").addEventListener("click", e => { const b = e.target.closest("[data-i]"); if (b) { current = +b.dataset.i; render(); } });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skin trivia | Dekatre</title>
+<meta name="description" content="Test your knowledge of climate change and skin health. Earn 10 Dekatre points for every correct answer.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Skin trivia | Dekatre">
+<meta property="og:description" content="Test your knowledge of climate change and skin health. Earn 10 Dekatre points for every correct answer.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .quiz-frame { border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.25rem, 4vw, 2.5rem); }
+  .how { border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.25rem, 3vw, 2rem); margin-top: 1.5rem; }
+  .how ol { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--orange); color: var(--on-accent); border-radius: 999px; overflow: hidden; }
+  .how li { padding: .9rem 1rem; text-align: center; font-weight: 600; font-size: .92rem; position: relative; }
+  .how li + li::before { content: ""; position: absolute; left: 0; top: 25%; bottom: 25%; width: 1px; background: rgba(0,0,0,.3); }
+  @media (max-width: 600px) { .how ol { grid-template-columns: 1fr; border-radius: var(--radius); } .how li + li::before { left: 20%; right: 20%; top: 0; bottom: auto; width: auto; height: 1px; } }
+  .score { font-family: var(--display); font-size: clamp(4rem, 12vw, 7rem); color: var(--accent-text); line-height: 1; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / <a href="rewards.html">Rewards</a> / Skin trivia</nav>
+      <h1>How well do you know your skin?</h1>
+      <p class="lede">Eight questions on skincare, sun and Singapore weather. Each correct answer earns 10 points the first time, and points turn into Shopee discount codes.</p>
+    </div>
+  </header>
+
+  <section class="section--tight">
+    <div class="wrap">
+      <div class="quiz-frame"><div class="quiz" id="quiz" aria-live="polite"></div></div>
+      <div class="how">
+        <h2 style="font-size:1.7rem">How points work</h2>
+        <ol><li>Answer the questions</li><li>Gain points</li><li>Redeem for vouchers</li></ol>
+        <p class="small muted" style="margin-top:1rem;margin-bottom:0">100 points = S$1. Spend them in your <a href="rewards.html">rewards wallet</a>.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+const Q = [
+  { id: "q1", q: "According to the WMO, which years were the 11 warmest ever recorded?", opts: ["1990 to 2000", "2005 to 2015", "2015 to 2025", "1950 to 1960"], a: 2,
+    why: "The World Meteorological Organization reports that 2015 to 2025 were the 11 warmest years on record." },
+  { id: "q2", q: "In a 2022 review of 15 studies, what did air pollution do to the water your skin loses?", opts: ["Decreased it", "Increased it", "Had no effect", "Stopped it completely"], a: 1,
+    why: "Every pollution study in the review found higher transepidermal water loss (TEWL) in people exposed to particulate matter or NO₂." },
+  { id: "q3", q: "Which of these is an air pollutant linked to skin ageing?", opts: ["Nitrogen dioxide (NO₂)", "Oxygen (O₂)", "Argon", "Water vapour"], a: 0,
+    why: "Pollutants such as NO₂, ozone, particulate matter and soot cause oxidative stress in the skin." },
+  { id: "q4", q: "What are free radicals?", opts: ["Skin cells that repair damage", "Unstable molecules that damage collagen and elastin", "A type of sunscreen", "Vitamins in fruit"], a: 1,
+    why: "Free radicals are unstable molecules created by UV, pollution and heat. They damage the proteins that keep skin firm." },
+  { id: "q5", q: "Why is vitamin C used in skincare for pollution and UV?", opts: ["It blocks all UV rays", "It's an antioxidant that neutralises free radicals", "It makes skin produce more oil", "It cools the skin down"], a: 1,
+    why: "Vitamin C is an antioxidant. It neutralises free radicals but doesn't replace sunscreen." },
+  { id: "q6", q: "Should you wear sunscreen on a cloudy day in Singapore?", opts: ["No, clouds block UV", "Only if you're at the beach", "Yes, UV passes through clouds", "Only in the afternoon"], a: 2,
+    why: "Much of the sun's UV gets through cloud cover, so daily SPF still matters." },
+  { id: "q7", q: "What does PSI measure in Singapore?", opts: ["Rainfall", "Air quality", "UV levels", "Sea temperature"], a: 1,
+    why: "The Pollutant Standards Index (PSI) measures air quality. Above 100 is considered unhealthy." },
+  { id: "q8", q: "Long-term UV exposure is a leading cause of…", opts: ["Photoageing", "Stronger collagen", "Oilier skin only", "Better skin hydration"], a: 0,
+    why: "UV is one of the leading causes of photoageing: fine lines, dark spots and loss of elasticity." }
+];
+let i = 0, correct = 0, earned = 0;
+const box = document.getElementById("quiz");
+
+function show() {
+  const item = Q[i];
+  box.innerHTML = `
+    <div class="quiz-bar"><span style="width:${(i / Q.length) * 100}%"></span></div>
+    <p class="quiz-count">Question ${i + 1} of ${Q.length}</p>
+    <h2>${item.q}</h2>
+    <div class="options">${item.opts.map((o, j) => `<button class="option" data-j="${j}">${o}</button>`).join("")}</div>
+    <div id="after"></div>`;
+  box.querySelectorAll(".option").forEach(b => b.addEventListener("click", () => answer(+b.dataset.j)));
+}
+
+function answer(j) {
+  const item = Q[i], ok = j === item.a, done = ustore.get("quizCorrect", []);
+  box.querySelectorAll(".option").forEach((b, k) => { b.disabled = true; if (k === item.a) b.classList.add("correct"); else if (k === j) b.classList.add("wrong"); });
+  let note = "";
+  if (ok) {
+    correct++;
+    if (!Auth.current()) note = " Log in to earn 10 points for answers like this.";
+    else if (!done.includes(item.id)) { Points.add(10, "Skin trivia: correct answer"); ustore.set("quizCorrect", [...done, item.id]); earned += 10; note = " +10 points."; }
+    else note = " You've already earned points for this one.";
+  }
+  box.querySelector("#after").innerHTML = `
+    <p class="feedback"><strong>${ok ? "Correct." : "Not quite."}</strong>${note} ${item.why}</p>
+    <div class="quiz-nav"><span></span><button class="btn" id="next">${i === Q.length - 1 ? "See my score" : "Next question"}</button></div>`;
+  box.querySelector("#next").addEventListener("click", () => { i++; i < Q.length ? show() : finish(); });
+  box.querySelector("#next").focus();
+}
+
+function finish() {
+  box.innerHTML = `
+    <div class="quiz-bar"><span style="width:100%"></span></div>
+    <p class="quiz-count">Your score</p>
+    <div class="score">${correct}/${Q.length}</div>
+    <p class="lede">${!Auth.current() ? `You played as a guest, so no points were saved. Create an account and play again to earn up to ${Q.length * 10} points.` : earned ? `You earned ${earned} points this round. Your balance is ${Points.get().balance} points.` : `No new points this round. You've already collected points for these answers. Your balance is ${Points.get().balance} points.`}</p>
+    <div class="btn-row"><a class="btn" href="rewards.html">Go to rewards wallet</a><a class="btn btn--ghost" href="spin.html">Spin the wheel</a><button class="btn btn--ghost" id="again">Try again</button></div>`;
+  box.querySelector("#again").addEventListener("click", () => { i = 0; correct = 0; earned = 0; show(); });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  if (!Auth.current()) document.querySelector(".quiz-frame").insertAdjacentHTML("beforebegin",
+    `<div style="margin-bottom:1.5rem">${loginPrompt("You can play as a guest, but points are only saved to an account.")}</div>`);
+  show();
+});
+</script>
+</body>
+</html>

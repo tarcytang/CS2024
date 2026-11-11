@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+<meta charset="utf-8">
+<script>try{if(localStorage.getItem("dekatre_theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop | Dekatre</title>
+<meta name="description" content="Shop the Wardah C-Defense vitamin C range: Complete Bundle, Student Starter Bundle and single products, with full ingredients and certifications. Checkout on Shopee.">
+<meta name="theme-color" content="#f6f6ee">
+<meta property="og:title" content="Products | Dekatre">
+<meta property="og:description" content="Shop the Wardah C-Defense vitamin C range: Complete Bundle, Student Starter Bundle and single products, with full ingredients and certifications. Checkout on Shopee.">
+<meta property="og:type" content="website">
+<link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=18b">
+<style>
+  .bundles { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .bundle { border: 1.5px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); padding: clamp(1.25rem, 3vw, 2rem); display: flex; flex-direction: column; }
+  .bundle.student { background: linear-gradient(160deg, rgba(232,145,63,.16), var(--surface) 55%); }
+  .bundle .imgs { display: flex; align-items: flex-end; justify-content: center; gap: .4rem; height: 220px; margin-bottom: 1.25rem; min-width: 0; }
+  .bundle .imgs img { max-height: 100%; width: auto; max-width: 22%; object-fit: contain; }
+  .bundle.student .imgs img { max-width: 30%; }
+  .bundle h2 { font-size: 1.9rem; margin: .6rem 0 .3rem; }
+  .bundle ul.items { padding-left: 1.1rem; margin: .5rem 0 1rem; color: var(--muted); }
+  .price-row { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-top: auto; }
+  .price-big { font-family: var(--display); font-size: 2.6rem; line-height: 1; color: var(--accent-text); }
+  .strike { text-decoration: line-through; color: var(--muted); }
+  @media (max-width: 860px) { .bundles { grid-template-columns: 1fr; } .bundle .imgs { height: 170px; } }
+
+  /* product rows with large photos */
+  .jump { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .jump a.chip { text-decoration: none; color: var(--ink); }
+  .prow { display: grid; grid-template-columns: minmax(240px, 0.85fr) 1.3fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: center;
+    padding-block: clamp(2rem, 5vw, 3.5rem); border-top: 1px solid var(--line-soft); scroll-margin-top: 90px; }
+  .prow:nth-child(even) .pimg { order: 2; }
+  .pimg { background: radial-gradient(circle at 50% 55%, rgba(232,145,63,.28), transparent 68%); border-radius: 24px; display: grid; place-items: center; padding: 1.5rem; min-height: 380px; }
+  .pimg img { max-height: 360px; width: auto; max-width: 100%; object-fit: contain; filter: drop-shadow(0 24px 30px rgba(184,98,31,.28)); }
+  .prow h2 { font-size: clamp(1.8rem, 3.6vw, 2.6rem); margin-bottom: .2rem; }
+  .prow .meta { color: var(--muted); margin-bottom: .8rem; }
+  .prow .price { font-family: var(--display); font-size: 2.2rem; color: var(--accent-text); line-height: 1; margin: .2rem 0 1rem; }
+  .goodfor { background: rgba(232,145,63,.1); border-left: 3px solid var(--orange); border-radius: 0 8px 8px 0; padding: .6rem .9rem; margin: 0 0 1rem; }
+  .ingr { list-style: none; padding: 0; margin: .4rem 0 1.1rem; display: grid; gap: .5rem; }
+  .ingr li { display: grid; grid-template-columns: minmax(9rem, auto) 1fr; gap: .9rem; padding-bottom: .5rem; border-bottom: 1px dashed var(--line-soft); }
+  .ingr strong { color: var(--ink); }
+  .ingr span { color: var(--muted); }
+  .sub-h { font-size: .95rem; font-weight: 700; color: var(--ink); margin: 0 0 .3rem; }
+  @media (max-width: 860px) { .prow { grid-template-columns: 1fr; } .prow:nth-child(even) .pimg { order: 0; } .pimg { min-height: 280px; } .pimg img { max-height: 260px; }
+    .ingr li { grid-template-columns: 1fr; gap: .1rem; } }
+
+  .faq { max-width: 820px; }
+  .faq details { border: 1.5px solid rgba(var(--ink-rgb),.2); border-radius: 10px; margin-bottom: .6rem; background: var(--surface); }
+  .faq details[open] { border-color: var(--orange); }
+  .faq summary { cursor: pointer; padding: 1rem 3rem 1rem 1.2rem; font-weight: 600; list-style: none; position: relative; min-height: 48px; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); font-size: 1.4rem; color: var(--accent-text); }
+  .faq details[open] summary::after { content: "−"; }
+  .faq details p { padding: 0 1.2rem 1rem; margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page-head page-banner page-banner--shop">
+    <div class="wrap">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> / Shop</nav>
+      <h1>Shop the C-Defense range</h1>
+      <p class="lede">Five vitamin C products for skin that deals with heat, humidity and sun every day. Choose a bundle or single products, then check out securely on Shopee.</p>
+      <ul class="badges" style="margin-top:1rem" aria-label="Certifications">
+        <li class="badge"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Halal certified by LPPOM MUI</li>
+        <li class="badge"><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Vitamin C in every product</li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="section--tight" aria-label="Bundles">
+    <div class="wrap bundles">
+      <article class="bundle">
+        <div class="imgs" aria-hidden="true"><img src="images/wash.png" alt=""><img src="images/mist.png" alt=""><img src="images/mask.png" alt=""><img src="images/moisturiser.png" alt=""><img src="images/ddcream.png" alt=""></div>
+        <span class="tag" style="align-self:flex-start">Best value</span>
+        <h2>Complete Bundle</h2>
+        <p class="muted mb-0">The full morning and night routine.</p>
+        <ul class="items"><li>Creamy Wash</li><li>Face Mist</li><li>Superserum Mask</li><li>Mousse Moisturiser</li><li>DD Cream SPF 30</li></ul>
+        <div class="price-row"><span class="price-big" data-bundle-price="full"></span><span class="strike" data-bundle-worth="full"></span></div>
+        <div class="btn-row" data-bundle-cta="full"></div>
+      </article>
+      <article class="bundle student" id="student">
+        <div class="imgs" aria-hidden="true"><img src="images/wash.png" alt=""><img src="images/mist.png" alt=""><img src="images/ddcream.png" alt=""></div>
+        <span class="tag" style="align-self:flex-start">For students</span>
+        <h2>Student Starter Bundle</h2>
+        <p class="muted mb-0">The three essentials for long school days: cleanse, refresh, protect.</p>
+        <ul class="items"><li>Creamy Wash</li><li>Face Mist</li><li>DD Cream SPF 30</li></ul>
+        <div class="price-row"><span class="price-big" data-bundle-price="student"></span><span class="strike" data-bundle-worth="student"></span></div>
+        <p class="small" style="margin:.6rem 0 0"><strong>Extra 15% off for students.</strong> <span data-student-note></span></p>
+        <div class="btn-row" data-bundle-cta="student"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="single-title">
+    <div class="wrap">
+      <h2 id="single-title">The five products</h2>
+      <p class="muted">Every product, with what it's for, what's inside and how it's certified.</p>
+      <nav class="jump" id="jump" aria-label="Jump to a product"></nav>
+      <div id="catalogue" style="margin-top:1.5rem"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0" aria-labelledby="faq-title">
+    <div class="wrap faq">
+      <h2 id="faq-title">Questions before you buy</h2>
+      <details><summary>Where do I buy?</summary>
+        <p>All purchases are completed on Shopee, so you get Shopee's payment options, shipping and buyer protection. Every "Buy on Shopee" button opens the product in a new tab.</p></details>
+      <details><summary>Are the products halal?</summary>
+        <p>Yes. Wardah's products are halal certified by LPPOM MUI, Indonesia's national halal authority. Wardah was the first cosmetics brand in Indonesia to receive this certification.</p></details>
+      <details><summary>Are the products organic?</summary>
+        <p>The products themselves are not certified organic. The Superserum Mask's sheet is made from 100% organic cotton and is biodegradable, according to its packaging.</p></details>
+      <details><summary>Is it suitable for sensitive skin?</summary>
+        <p>The Superserum Mask and Mousse Moisturiser are dermatologically tested, and the Face Mist contains soothing allantoin. Everyone's skin is different, so patch-test each product on your inner arm for 24 hours first, and stop if you notice stinging or redness. The <a href="skin-quiz.html">skin quiz</a> has tips for sensitive skin.</p></details>
+      <details><summary>Will it clog my pores in the humidity?</summary>
+        <p>The Mousse Moisturiser is labelled non-comedogenic, meaning it's formulated not to clog pores. If your skin is oily, apply a thin layer and cleanse after heavy sweating.</p></details>
+      <details><summary>Which order do I apply the products in?</summary>
+        <p>Morning: Creamy Wash, Face Mist, Mousse Moisturiser, then DD Cream SPF 30 last. Night: Creamy Wash, Face Mist, Superserum Mask (2 to 3 times a week), then Mousse Moisturiser. See the <a href="routine.html">routine guide</a>.</p></details>
+      <details><summary>How do I use my discount codes?</summary>
+        <p>Redeem points in your <a href="rewards.html">rewards wallet</a> to get a code, copy it, then enter it in the voucher field at Shopee checkout. Codes last 30 days, and you can use one per order.</p></details>
+    </div>
+  </section>
+</main>
+
+<script src="js/main.js?v=14"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  ["full", "student"].forEach(k => {
+    const b = BUNDLES[k];
+    document.querySelector(`[data-bundle-price="${k}"]`).textContent = money(b.price);
+    document.querySelector(`[data-bundle-worth="${k}"]`).textContent = money(bundleWorth(b)) + " if bought separately";
+    document.querySelector(`[data-bundle-cta="${k}"]`).innerHTML = shopeeButton(b.shopee, k === "full" ? "Buy the bundle on Shopee" : "Buy on Shopee");
+  });
+  const u = Auth.current(), note = document.querySelector("[data-student-note]");
+  note.innerHTML = u && isStudentEmail(u.email)
+    ? `Your code: <button class="chip" data-copy="${BUNDLES.student.code}" aria-label="Copy code ${BUNDLES.student.code}">${BUNDLES.student.code} (tap to copy)</button>`
+    : `<a href="login.html?mode=signup&next=products.html">Sign up with your school email</a> (ending in .edu.sg) to unlock your code.`;
+
+  const tick = '<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>';
+  document.getElementById("jump").innerHTML = Object.entries(PRODUCTS).map(([id, p]) => `<a class="chip" href="#p-${id}">${p.short}</a>`).join("");
+  document.getElementById("catalogue").innerHTML = Object.entries(PRODUCTS).map(([id, p]) => `
+    <article class="prow" id="p-${id}">
+      <div class="pimg"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+      <div>
+        <h2>${p.name}</h2>
+        <p class="meta">${p.benefit}${p.size ? `. ${p.size}` : ""}</p>
+        <div class="price">${money(p.price)}</div>
+        <p class="goodfor"><strong>Good for:</strong> ${p.problem}</p>
+        <p>${p.how}</p>
+        <p class="sub-h">Key ingredients</p>
+        <ul class="ingr">${p.ingredients.map(([n, d]) => `<li><strong>${n}</strong><span>${d}</span></li>`).join("")}</ul>
+        <p class="sub-h">Certifications and claims</p>
+        <ul class="badges">${p.certs.map(c => `<li class="badge">${tick}${c}</li>`).join("")}</ul>
+        <div class="btn-row">${shopeeButton(p.shopee)}<a class="btn btn--ghost" href="science.html#ingredients">More on ingredients</a></div>
+      </div>
+    </article>`).join("");
+});
+</script>
+</body>
+</html>
